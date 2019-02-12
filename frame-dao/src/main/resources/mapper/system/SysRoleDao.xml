@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makun.dao.system.SysRoleDao">
+
+	<select id="queryPageList" resultType="com.makun.entity.system.SysRole">
+		select 
+		r.id as roleId,
+		r.role_name as roleName,
+		r.mark as mark,
+		r.create_time as createTime,
+		u.username as createName
+		from tab_sys_role r
+		left join tab_sys_user u on u.id = r.create_id
+		WHERE r.delete_flag = "1"
+			<if test="roleName != null and roleName.trim() != ''">
+				and r.role_name like concat(concat('%',#{roleName}),'%')
+			</if>
+			<if test=" search != null and search != ''">
+				AND r.role_name like '%${search}%'
+			</if>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by r.${sidx} ${order}
+			</when>
+			<otherwise>
+				order by r.create_time asc
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="queryList" resultType="com.makun.entity.system.SysRole">
+		select
+		r.id as roleId,
+		r.role_name as roleName,
+		r.mark as mark,
+		r.create_time as createTime,
+		u.username as createName
+		from tab_sys_role r
+		left join tab_sys_user u on u.id = r.create_id
+		<where>
+			 r.delete_flag = "1"
+			<if test="roleName != null and roleName.trim() != ''">
+				and r.role_name like concat(concat('%',#{roleName}),'%')
+			</if>
+		</where>
+		order by r.create_time desc
+	</select>
+	
+	<delete id="deleteSysRoleByRoleId">
+		delete from tab_sys_role where id in
+		<foreach item="roleId" collection="array" open="(" separator="," close=")">
+			#{roleId}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteSysRoleMenuByRoleId">
+        delete from tab_sys_role_menu where role_id in
+        <foreach item="roleId" collection="array" open="(" separator="," close=")">
+            #{roleId}
+        </foreach>
+	</delete>
+	
+	<delete id="deleteSysUserRoleByRoleId">
+        delete from tab_sys_user_role where role_id in
+        <foreach item="roleId" collection="array" open="(" separator="," close=")">
+            #{roleId}
+        </foreach>
+	</delete>
+	
+</mapper>

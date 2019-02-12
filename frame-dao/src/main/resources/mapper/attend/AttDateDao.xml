@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makun.dao.attend.AttDateDao">
+
+	<select id="showattDate" parameterType="map"
+		resultType="com.makun.entity.attend.AttendDate">
+		select id as 'attDateid',calendar_date as 'calendarDate',is_workingday
+		as
+		'isWorkingday',mark from tab_attend_date
+		where delete_flag = '1'
+		<include refid="search" />
+		order by calendar_date asc
+	</select>
+
+	<select id="getDateByDate" parameterType="String"
+		resultType="com.makun.entity.attend.AttendDate">
+		select id as 'attDateid',calendar_date as
+		'calendarDate',is_workingday
+		as
+		'isWorkingday',mark from
+		tab_attend_date where calendar_date =
+		#{calendarDate}
+		order by
+		calendar_date asc
+	</select>
+	
+	<select id="isattend" resultType="String">
+		select is_workingday from tab_attend_date where calendar_date=#{calendarDate} and delete_flag = '1'
+	</select>
+	
+	<update id="deleteDate">
+		update tab_attend_date set delete_flag = '0' where id in
+		<foreach item="attDateid" collection="array" open="(" separator="," close=")">
+			#{attDateid}
+		</foreach>
+	</update>
+	
+	<sql id="search">
+		<if test="search != null and search != ''">
+			AND
+			(
+			calendar_date like '%${search}%'
+			)
+		</if>
+	</sql>
+
+</mapper>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makun.dao.system.SysUserRoleDao">
+
+	<sql id="condition_sql">
+		<if test="id != null"> and ur.id = #{id,jdbcType=VARCHAR}</if>
+		<if test="roleId != null"> and ur.roleId = #{id,jdbcType=VARCHAR}</if>
+		<if test="userId != null"> and ur.userId = #{id,jdbcType=VARCHAR}</if>
+	</sql>
+
+	<select id="findGroupsByUser" parameterType="String"
+		resultType="com.makun.entity.system.SysUserRole">
+		select
+		ur.id as id,
+		ur.role_id as roleId,
+		r.role_name as roleName,
+		ur.user_id as userId,
+		u.username as userName
+		from tab_sys_user_role ur
+		left join tab_sys_role r on r.id = ur.role_id
+		left join tab_sys_user u
+		on u.id = ur.user_id
+		<where>
+			1 = 1
+			<include refid="condition_sql" />
+		</where>
+	</select>
+	
+	<select id="queryList" resultType="com.makun.entity.system.SysUserRole">
+		select
+		ur.id as id,
+		ur.role_id as roleId,
+		r.role_name as roleName,
+		ur.user_id as userId,
+		u.username as userName
+		from tab_sys_user_role ur
+		left join tab_sys_role r on r.id = ur.role_id
+		left join tab_sys_user u
+		on u.id = ur.user_id
+		<where>
+			<if test="userId != null">
+				ur.user_id = #{userId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="queryRoleIdList" resultType="String">
+		select role_id from tab_sys_user_role where user_id = #{value}
+	</select>
+	
+	<delete id="deleteByUserId">
+		delete from tab_sys_user_role where user_id = #{userId}
+	</delete>
+	
+	<select id="queryRoleIdAll" resultType="String">
+		select role_id from tab_sys_role 
+	</select>
+	
+	<select id="queryRoleList" resultType="com.makun.entity.system.SysUserRole">
+		select 
+		a.role_id as roleId,
+		b.role_name as roleName
+		from tab_sys_user_role a
+		left join tab_sys_role b on b.id = a.role_id
+		where a.user_id = #{value}
+	</select>
+
+	<select id="getUserByRoleId" resultType="String">
+		select 
+		a.user_id as userId
+		from tab_sys_user_role a
+		left join tab_sys_role b on b.id = a.role_id
+		where a.role_id = #{roleId}
+	</select>
+
+</mapper>

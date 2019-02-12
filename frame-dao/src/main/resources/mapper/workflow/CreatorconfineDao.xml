@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makun.dao.workflow.CreatorconfineDao">
+
+	<!-- 根据模型id查询控制权限 -->
+	<select id="getByModelId" resultType="com.makun.entity.workflow.Creatorconfine">
+		SELECT
+		id AS id,
+		model_id AS modelId,
+		process_key AS processKey,
+		role_ids AS roleIds,
+		user_ids AS userIds
+		FROM tab_workflow_creatorconfine
+		WHERE model_id = #{modelId}
+		ORDER BY create_time DESC
+	</select>
+
+	<!-- 根据流程定义key查询控制权限 -->
+	<select id="getByDefKey" resultType="com.makun.entity.workflow.Creatorconfine">
+		SELECT
+		id AS id,
+		model_id AS modelId,
+		process_key AS processKey,
+		role_ids AS roleIds,
+		user_ids AS userIds
+		FROM tab_workflow_creatorconfine
+		WHERE process_key = #{key}
+	</select>
+
+	<!-- 根据模型id删除控制权限 -->
+	<delete id="delByModelId">
+		DELETE FROM tab_workflow_creatorconfine WHERE model_id = #{modelId}
+	</delete>
+
+</mapper>

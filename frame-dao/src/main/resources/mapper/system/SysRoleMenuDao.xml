@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makun.dao.system.SysRoleMenuDao">
+
+    <delete id="deleteByRoleId">
+		delete from tab_sys_role_menu where role_id = #{roleId}
+	</delete>
+	
+	<delete id="deleteByMenuId">
+		delete from tab_sys_role_menu where menu_id = #{menuId}
+	</delete>
+
+	<select id="showMenuByRoleId" parameterType="String" resultType="com.makun.entity.system.SysRoleMenu">
+		select 
+		id as id,
+		role_id as roleId,
+		menu_id as menuId
+		from tab_sys_role_menu
+		where role_id = #{roleId}
+	</select>
+	
+	<select id="queryMenuIdList" resultType="String">
+		select menu_id from tab_sys_role_menu where role_id = #{roleId}
+	</select>
+
+</mapper>

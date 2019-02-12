@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makun.dao.system.SysMenuDao">
+
+	<select id="queryListParentId" parameterType="String"
+		resultType="com.makun.entity.system.SysMenu">
+		select
+		m.id as menuId,
+		m.parent_id as parentId,
+		m.menu_name as
+		menuName,
+		m.url as url,
+		m.icon as icon,
+		m.order_num as orderNum,
+		m.create_time as createTime,
+		m.update_time as updateTime,
+		m.create_id as
+		createId,
+		m.update_id as updateId,
+		u.username as createName,
+		uu.username
+		as updateName
+		from tab_sys_menu m
+		left join tab_sys_user u on u.id =
+		m.create_id
+		left join tab_sys_user uu on uu.id = m.update_id
+		where
+		m.parent_id = #{parentId}
+		and m.delete_flag = '1'
+		order by m.order_num
+		asc
+	</select>
+
+	<!-- 查询用户的权限列表 -->
+	<select id="queryUserList" parameterType="String"
+		resultType="com.makun.entity.system.SysMenu">
+		select
+		distinct m.*,
+		(select p.menu_name from tab_sys_menu p
+		where p.id = m.parent_id)
+		as parentName
+		from tab_sys_user_role ur
+		LEFT
+		JOIN tab_sys_role_menu rm
+		on ur.role_id = rm.role_id
+		LEFT JOIN
+		tab_sys_menu m on rm.menu_id = m.id
+		where ur.user_id = #{userId} order
+		by m.order_num asc
+	</select>
+
+	<select id="getListByPid" parameterType="String"
+		resultType="com.makun.entity.system.SysMenu">
+		select * from tab_sys_menu m
+		where 1=1
+		AND m.type != '2'
+		<if test="_parameter != null and _parameter != ''">
+			AND m.parent_id = #{_parameter}
+		</if>
+		ORDER BY m.order_num
+	</select>
+
+	<select id="queryList" resultType="com.makun.entity.system.SysMenu">
+		select 
+		m.id as menuId,
+		m.parent_id as parentId,
+		m.menu_name as menuName,
+		m.url as url,
+		m.perms as perms,
+		m.type as type,
+		m.icon as icon,
+		m.order_num as orderNum,
+		m.create_time as createTime,
+		p.menu_name as parentName
+		from tab_sys_menu m
+		left join tab_sys_menu p
+		on p.id = m.parent_id
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by m.${sidx} ${order}
+			</when>
+			<otherwise>
+				order by m.order_num asc
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="queryNotButtonList" resultType="com.makun.entity.system.SysMenu">
+		select
+		m.id as menuId,
+		m.parent_id as parentId,
+		m.menu_name as menuName,
+		m.url as url,
+		m.perms as perms,
+		m.type as type,
+		m.icon as icon,
+		m.order_num as orderNum,
+		m.create_time as createTime,
+		p.menu_name as parentName
+		from tab_sys_menu m
+		left join tab_sys_menu p
+		on p.id = m.parent_id
+		where m.type != 2 order by m.order_num asc
+	</select>
+
+	<delete id="delById">
+		delete from tab_sys_menu where id = #{menuId}
+	</delete>
+
+</mapper>

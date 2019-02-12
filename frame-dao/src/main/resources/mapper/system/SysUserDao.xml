@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makun.dao.system.SysUserDao">
+	<select id="findAlluser"
+		resultType="com.makun.entity.system.SysUser">
+		select
+		id as userId,
+		username,
+		password,
+		sex,
+		tel,
+		dept_id as deptId,
+		email,
+		address,
+		salt,
+		status,
+		create_time as createTime,
+		update_time as updateTime,
+		delete_flag as deleteFlag
+		from tab_sys_user
+	</select>
+
+	<select id="getUserByName" parameterType="String"
+		resultType="com.makun.entity.system.SysUser">
+		select
+		u.id as userId,
+		u.username as username,
+		u.password as password,
+		u.sex as sex,
+		u.tel as tel,
+		u.dept_id as deptId,
+		u.email as email,
+		u.address as
+		address,
+		u.salt as salt,
+		u.status as status,
+		u.create_time as createTime,
+		u.update_time as updateTime,
+		u.delete_flag as deleteFlag,
+		m.person_header as userPhoto
+		from tab_sys_user u
+		left join
+		tab_per_myinfo m on m.id = u.id
+		where
+		u.username = #{username}
+	</select>
+
+	<!-- 查询用户的所有菜单ID -->
+	<select id="queryAllMenuId" parameterType="String"
+		resultType="String">
+		select distinct
+		rm.menu_id
+		from tab_sys_user_role ur
+		LEFT JOIN
+		tab_sys_role_menu rm on ur.role_id = rm.role_id
+		where ur.user_id =
+		#{userId}
+	</select>
+
+	<select id="queryPageList"
+		resultType="com.makun.entity.system.SysUser">
+		select
+		u.id as userId,
+		u.username as username,
+		u.password as password,
+		u.sex as sex,
+		u.tel as tel,
+		u.dept_id as deptId,
+		u.email as email,
+		u.address as
+		address,
+		u.salt as salt,
+		u.status as status,
+		d.dept_name as deptName,
+		u.create_time as createTime,
+		uu.username as createName
+		from tab_sys_user
+		u
+		left join tab_sys_dept d on d.id = u.dept_id
+		left join tab_sys_user uu
+		on uu.id = u.create_id
+		<where>
+			u.delete_flag = '1'
+			<if test="username != null and username.trim() != ''">
+				and u.username like concat(concat('%',#{username}),'%')
+			</if>
+			<if test="search != null and search.trim() != ''">
+				and u.username like concat(concat('%',#{search}),'%')
+			</if>
+		</where>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by u.${sidx} ${order}
+			</when>
+			<otherwise>
+				order by u.create_time desc
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="queryList"
+		resultType="com.makun.entity.system.SysUser">
+		select
+		u.id as userId,
+		u.username as username,
+		u.password as password,
+		u.sex as sex,
+		u.tel as tel,
+		u.dept_id as deptId,
+		u.email as email,
+		u.address as address,
+		u.salt as salt,
+		u.status as status,
+		d.dept_name as
+		deptName,
+		u.create_time as createTime,
+		uu.username as createName
+		from
+		tab_sys_user u
+		left join tab_sys_dept d on d.id = u.dept_id
+		left join
+		tab_sys_user uu on uu.id = u.create_id
+		<where>
+			u.delete_flag = '1'
+			<if test="username != null and username.trim() != ''">
+				and u.username like concat(concat('%',#{username}),'%')
+			</if>
+		</where>
+		order by u.create_time desc
+	</select>
+
+	<!-- 查询用户的所有权限 -->
+	<select id="queryAllPerms" resultType="string">
+		select m.perms from
+		tab_sys_user_role ur
+		LEFT JOIN tab_sys_role_menu rm on ur.role_id = rm.role_id
+		LEFT JOIN tab_sys_menu m on rm.menu_id = m.id
+		where ur.user_id = #{userId}
+	</select>
+
+	<!-- 查询用户的角色权限 -->
+	<select id="queryRoleByUserId" resultType="string">
+		select ur.role_id AS roleId from
+		tab_sys_user_role ur
+		where ur.user_id = #{userId}
+	</select>
+
+	<select id="queryByUserName"
+		resultType="com.makun.entity.system.SysUser">
+		select
+		u.id as userId,
+		u.username as username,
+		u.password as password,
+		u.sex as sex,
+		u.tel as tel,
+		u.dept_id as deptId,
+		u.email as email,
+		u.address as
+		address,
+		u.salt as salt,
+		u.status as status,
+		u.create_time as createTime,
+		u.update_time as updateTime,
+		u.delete_flag as deleteFlag,
+		m.person_header as userPhoto
+		from tab_sys_user u
+		left join
+		tab_per_myinfo m on m.id = u.id
+		where
+		u.username = #{username}
+	</select>
+
+	<delete id="deleteSysUserBatch">
+		delete from tab_sys_user where id in
+		<foreach item="userId" collection="array" open="("
+			separator="," close=")">
+			#{userId}
+		</foreach>
+	</delete>
+
+	<delete id="deleteSysUserRoleBatch">
+		delete from tab_sys_user_role where user_id in
+		<foreach item="userId" collection="array" open="("
+			separator="," close=")">
+			#{userId}
+		</foreach>
+	</delete>
+
+	<select id="deptUserList" parameterType="map"
+		resultType="com.makun.entity.system.SysUser">
+		select
+		u.id as userId,
+		u.username as username,
+		u.password as password,
+		u.sex as sex,
+		u.tel as tel,
+		u.dept_id as deptId,
+		u.email as email,
+		u.address as address,
+		u.salt as salt,
+		u.status as status,
+		d.dept_name as
+		deptName,
+		u.create_time as createTime,
+		uu.username as createName
+		from
+		tab_sys_user u
+		left join tab_sys_dept d on d.id = u.dept_id
+		left join
+		tab_sys_user uu on uu.id = u.create_id
+		<where>
+			u.delete_flag = '1'
+			<if test="deptId != null and deptId != ''">
+				AND a.dept_id= #{deptId}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectByName" parameterType="java.lang.String"
+		resultType="com.makun.entity.system.SysUser">
+		select
+		u.id as userId,
+		u.username as username,
+		u.password as password,
+		u.sex as
+		sex,
+		u.tel as tel,
+		u.dept_id as deptId,
+		u.email as email,
+		u.address as
+		address,
+		u.salt as salt,
+		u.status as status,
+		d.dept_name as deptName,
+		u.create_time as createTime,
+		uu.username as createName
+		from tab_sys_user
+		u
+		left join tab_sys_dept d on d.id = u.dept_id
+		left join tab_sys_user uu
+		on uu.id = u.create_id
+		where u.delete_flag = '1' AND u.username=
+		#{_parameter}
+	</select>
+
+	<select id="findById" parameterType="java.lang.String"
+		resultType="com.makun.entity.system.SysUser">
+		select
+		u.id as userId,
+		u.username as username,
+		u.password as password,
+		u.sex as
+		sex,
+		u.tel as tel,
+		u.dept_id as deptId,
+		u.email as email,
+		u.address as
+		address,
+		u.salt as salt,
+		u.status as status,
+		d.dept_name as deptName,
+		u.create_time as createTime,
+		uu.username as createName
+		from tab_sys_user
+		u
+		left join tab_sys_dept d on d.id = u.dept_id
+		left join tab_sys_user uu
+		on uu.id = u.create_id
+		where u.delete_flag = '1' AND u.id=
+		#{_parameter}
+	</select>
+
+	<select id="selectByPid"
+		resultType="com.makun.entity.system.SysUser">
+		select
+		u.id as userId,
+		u.username as username,
+		u.password as password,
+		u.sex as sex,
+		u.tel as tel,
+		u.dept_id as deptId,
+		u.email as email,
+		u.address as address,
+		u.salt as salt,
+		u.status as status,
+		d.dept_name as
+		deptName,
+		u.create_time as createTime,
+		uu.username as createName
+		from
+		tab_sys_user u
+		left join tab_sys_dept d on d.id = u.dept_id
+		left join
+		tab_sys_user uu on uu.id = u.create_id
+		where u.delete_flag = '1' AND
+		u.dept_id in
+		<foreach item="list" collection="list" open="(" separator=","
+			close=")">
+			#{list}
+		</foreach>
+	</select>
+
+	<select id="selectUserList"
+		resultType="com.makun.entity.system.SysUser">
+		select
+		u.id as userId,
+		u.username as username,
+		u.password as password,
+		u.sex as sex,
+		u.tel as tel,
+		u.dept_id as deptId,
+		u.email as email,
+		u.address as address,
+		u.salt as salt,
+		u.status as status,
+		d.dept_name as
+		deptName,
+		u.create_time as createTime,
+		uu.username as createName
+		from
+		tab_sys_user u
+		left join tab_sys_dept d on d.id = u.dept_id
+		left join
+		tab_sys_user uu on uu.id = u.create_id
+		where u.delete_flag = '1' AND
+		u.id in
+		<foreach item="ids" collection="array" open="(" separator=","
+			close=")">
+			#{ids}
+		</foreach>
+	</select>
+
+	<select id="queryUserByDeptId" parameterType="java.lang.String"
+		resultType="map">
+		select id as id,
+		username as username,
+		'sign' as "sign",
+		'offline' as "status"
+		from tab_sys_user
+		where dept_Id = #{deptId}
+	</select>
+
+	<select id="getAvatar" resultType="java.lang.String"
+		parameterType="java.lang.String">
+		select person_photo from tab_fast_file where user_id = #{id}
+	</select>
+
+	<select id="getUserListByRoles" parameterType="java.lang.String"
+		resultType="map">
+		select
+		u.id as "userId",
+		u.username as username
+		from tab_sys_user u
+		left join tab_sys_user_role r on u.id = r.user_id
+		where r.role_id = #{roleId}
+	</select>
+
+	<select id="selectAll"
+		resultType="com.makun.entity.system.SysUser">
+		select
+		u.id as userId,
+		u.username as username,
+		u.password as
+		password,
+		u.sex as sex,
+		u.tel as tel,
+		u.dept_id as deptId,
+		u.email as
+		email,
+		u.address as address,
+		u.salt as salt,
+		u.status as status,
+		d.dept_name as deptName,
+		u.create_time as createTime,
+		uu.username as
+		createName
+		from tab_sys_user u
+		left join tab_sys_dept d on d.id =
+		u.dept_id
+		left join tab_sys_user uu on uu.id = u.create_id
+		where
+		u.delete_flag = '1'
+	</select>
+
+	<select id="pageByDeptId"
+		resultType="com.makun.entity.system.SysUser" parameterType="map">
+		select
+		u.id as userId,
+		u.username as username,
+		u.password as password,
+		u.sex as sex,
+		u.tel as tel,
+		u.dept_id as deptId,
+		u.email as email,
+		u.address as address,
+		u.salt as salt,
+		u.status as status,
+		d.dept_name as
+		deptName,
+		u.create_time as createTime,
+		uu.username as createName
+		from
+		tab_sys_user u
+		left join tab_sys_dept d on d.id = u.dept_id
+		left join
+		tab_sys_user uu on uu.id = u.create_id
+		where u.delete_flag = '1'
+		and d.id in
+		<foreach item="list" collection="list" open="(" separator=","
+			close=")">
+			#{list}
+		</foreach>
+	</select>
+
+</mapper>

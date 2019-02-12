@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makun.dao.system.SysDeptDao">
+
+	<select id="queryList" resultType="com.makun.entity.system.SysDept">
+		select 
+		d.id as deptId,
+		d.parent_id as parentId,
+		d.dept_name as deptName,
+		d.order_num as orderNum,
+		p.dept_name as parentName,
+		d.create_time as createTime,
+		d.create_id as createId
+		from tab_sys_dept d
+		left join tab_sys_dept p on p.id = d.parent_id
+		where d.delete_flag = "1"
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by d.${sidx} ${order}
+			</when>
+			<otherwise>
+				order by d.order_num asc
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="queryDetpIdList" parameterType="String" resultType="String">
+		select id from tab_sys_dept where parent_id = #{value} and delete_flag = "1"
+	</select>
+
+</mapper>

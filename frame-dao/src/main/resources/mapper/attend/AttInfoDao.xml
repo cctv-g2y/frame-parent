@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.makun.dao.attend.AttInfoDao">
+	<select id="selectPageList" parameterType="map"
+		resultType="com.makun.entity.attend.AttendInfo">
+		SELECT B.id AS attendId,A.calendar_date AS
+		shouldDate,B.work_date AS
+		workDate,B.on_status AS onStatus,B.off_status AS offStatus FROM
+		tab_attend_date A
+		LEFT JOIN tab_attend_info B ON A.calendar_date =
+		B.work_date
+		WHERE
+		A.is_workingday = '1' AND
+		A.calendar_date BETWEEN
+		(SELECT create_time
+		FROM tab_sys_user WHERE ID =
+		#{userId}) AND
+		#{today}
+		<include refid="search" />
+		ORDER BY
+		A.calendar_date desc
+	</select>
+
+	<select id="getmyattend" parameterType="map"
+		resultType="com.makun.entity.attend.AttendInfo">
+		SELECT id AS attendId,on_duty_time AS onTime,off_duty_time
+		AS offTime,on_status AS onStatus,off_status AS offStatus,late_mark AS
+		lateMark,early_mark AS earlyMark,mark AS mark,late_time AS
+		lateTime,early_time AS earlyTime
+		FROM tab_attend_info
+		WHERE user_id =
+		#{userId}
+		AND work_date = #{workDate} AND delete_flag =
+		'1';
+	</select>
+
+	<sql id="search">
+		<if test="search != null and search != ''">
+			AND
+			(
+			A.calendar_date like '%${search}%'
+			)
+		</if>
+	</sql>
+
+</mapper>
