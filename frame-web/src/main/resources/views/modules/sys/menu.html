@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="pagecom/includepage :: commonHead('菜单管理界面')"></head>
+<style type="text/css">
+.fixed-table-container {
+	top: -10px;
+}
+
+.grid-btn {
+	margin-bottom: 5px;
+}
+
+.treegrid-tbody {
+	height: auto !important;
+}
+</style>
+<body>
+	<div id="smartPlatformApp">
+		<div class="panel panel-style panel-top panel-no-shadow">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					<i class="fa fa-th-list" aria-hidden="true"></i> <span>菜单管理</span>
+				</h3>
+			</div>
+			<div id="collapseTable" class="panel-collapse collapse in">
+				<div class="content padding-left-15 padding-right-15 margin-top-10">
+					<div class="grid-btn">
+							<a class="btn btn-default btn-sm" onclick="add()"><i
+								class="fa fa-plus"></i>&nbsp;新增</a>
+							<a class="btn btn-default btn-sm" onclick="update()"><i
+								class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+							<a class="btn btn-default btn-sm" onclick="del()"><i
+								class="fa fa-trash-o"></i>&nbsp;删除</a>
+					</div>
+				</div>
+				<div class="panel-body padding-top-1 padding-bottom-5">
+					<table id="menuTable" data-mobile-responsive="true"
+						data-click-to-select="true">
+						<thead>
+							<tr>
+								<th data-field="selectItem" data-checkbox="true"></th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+		<!-- 操作按钮 -->
+		<div class="arrows-page-btn-box" style="display: none;">
+			<a class="arrows-btn top" data-toggle="collapse"
+				data-parent="#accordion" href="#collapseTable"> <img
+				th:src="@{/img/arrows/arrows-page-top.png}" />
+
+			</a> <a class="arrows-btn down " data-toggle="collapse"
+				data-parent="#accordion" href="#collapseInfo"> <img
+				th:src="@{/img/arrows/arrows-page-down.png}" />
+			</a>
+		</div>
+		<!-- 操作界面 -->
+		<div id="freedetail" style="display: none;">
+			<div id="panelinfo" class="panel panel-style margin-top-5">
+				<div class="panel-heading" style="border-top: 1px solid #ddd;">
+					<h3 class="panel-title">
+						<i id="icon" aria-hidden="true"></i> <span id="mytitle"></span>
+					</h3>
+				</div>
+				<div id="collapseInfo" class="panel-body panel-body-style collapse in">
+					<div class="" id="demo"
+						style="display: none;">
+						<div class="col-sm-12 margin-bottom-5">
+							<button type="button" class="btn btn-default btn-sm"
+								onclick="saveOrUpdate()">
+								<i class="fa fa-hand-o-up" aria-hidden="true"></i> <span>提交</span>
+							</button>
+							<button type="button" class="btn btn-default btn-sm"
+								onclick="resetForm('#myForm')">
+								<i class="fa fa-repeat" aria-hidden="true"></i> <span>重置</span>
+							</button>
+						</div>
+						<div class="col-sm-12">
+							<form id="myForm" class="form-horizontal freeze-scroll">
+								<div class="panel-border">
+									<div class="form-group margin-top-10" id="radio-box">
+										<div class="col-sm-2 control-label">
+											<label>类型</label>
+										</div>
+										<div class="col-sm-8">
+											<label class="radio-inline"> <input type="radio"
+												checked="checked" name="type" id="radio_0" value="0" /> 目录
+											</label> <label class="radio-inline"> <input type="radio"
+												name="type" id="radio_1" value="1" /> 菜单
+											</label> <label class="radio-inline"> <input type="radio"
+												name="type" id="radio_2" value="2" /> 按钮
+											</label>
+										</div>
+									</div>
+
+									<div id="menu-name" data-type="0" class="form-group nn"
+										style="display: none;">
+										<label class="col-sm-2 control-label star-b">菜单名称</label>
+										<div class="col-sm-9">
+											<input type="text" name="menuName" class="form-control"
+												placeholder="菜单名称或按钮名称" />
+										</div>
+									</div>
+
+									<div id="sup-menu" data-type="0" class="form-group nn"
+										style="display: none;">
+										<label class="col-sm-2 control-label star-b">上级菜单</label>
+										<div class="col-sm-9">
+											<input type="text" name="supMenu" class="form-control"
+												style="cursor: pointer;" onclick="menuTree()"
+												readonly="readonly" placeholder="一级菜单" />
+										</div>
+									</div>
+
+									<div id="menu-url" class="form-group nn" style="display: none;">
+										<label class="col-sm-2 control-label star-b">菜单URL</label>
+										<div class="col-sm-9">
+											<input type="text" name="menuURL" class="form-control"
+												placeholder="菜单URL" />
+										</div>
+									</div>
+
+									<div id="authori-sign" class="form-group nn"
+										style="display: none;">
+										<div class="col-sm-2 control-label">授权标识</div>
+										<div class="col-sm-9">
+											<input type="text" class="form-control"
+												placeholder="多个用逗号分隔，如：user:list,user:create" />
+										</div>
+									</div>
+
+									<div id="seq-num" data-type="0" class="form-group nn"
+										style="display: none;">
+										<div class="col-sm-2 control-label">排序号</div>
+										<div class="col-sm-9">
+											<input type="number" class="form-control" placeholder="排序号" />
+										</div>
+									</div>
+
+									<div id="menu-icon" data-type="0" class="form-group nn"
+										style="display: none;">
+										<div class="col-sm-2 control-label">图标</div>
+										<div class="col-sm-9">
+											<input type="text" class="form-control" placeholder="菜单图标" />
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 选择菜单 -->
+	<div class="modal fade" id="menuLayer" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h5 class="modal-title">选择部门</h5>
+				</div>
+				<div class="modal-body">
+					<ul id="menuTree" class="ztree"></ul>
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-primary" onclick="saveDept()"
+						value="确定" /> <input type="button" class="btn btn-default"
+						data-dismiss="modal" value="返回" />
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" th:src="@{/js/modules/sys/menu.js}"></script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="pagecom/indexpage :: commonHead('系统主页')"></head>
+<style>
+#sidebar::-webkit-scrollbar {
+    display: none;
+}
+</style>
+
+<body class="no-skin">
+    <div id="navbar" class="navbar navbar-default">
+        <div class="navbar-container" id="navbar-container">
+            <div class="navbar-header pull-left">
+                <a class="navbar-brand"> <small> <img src="img/logo.png"
+                        alt=""></img>
+                </small>
+                </a>
+            </div>
+
+            <div class="navbar-buttons navbar-header pull-right"
+                role="navigation">
+                <ul class="nav ace-nav">
+
+                    <li class="green"><a href="#" data-toggle="dropdown"
+                        class="dropdown-toggle"> <i
+                            class="ace-icon fa fa-envelope icon-animated-vertical"></i> <span
+                            class="badge badge-success">0</span>
+                    </a>
+
+                        <ul
+                            class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
+                            <li class="dropdown-header"><i
+                                class="ace-icon fa fa-envelope-o"></i> 13条未读信息</li>
+
+                            <li class="dropdown-content">
+                                <ul class="dropdown-menu dropdown-navbar">
+
+                                    <li><a href="#"> <img src="img/test.jpg"
+                                            class="msg-photo" alt="Alex's Avatar"></img> <span
+                                            class="msg-body"> <span class="msg-title"> <span
+                                                    class="blue">B2C:</span> 系统产生20个错误，12个警告...
+                                            </span> <span class="msg-time"> <i
+                                                    class="ace-icon fa fa-clock-o"></i> <span>2014-12-15
+                                                        18:00:00</span>
+                                            </span>
+                                        </span>
+                                    </a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-footer"><a href="inbox.html"> 查看全部消息
+                                    <i class="ace-icon fa fa-arrow-right"></i>
+                            </a></li>
+                        </ul></li>
+                    <li class="light-blue"><a data-toggle="dropdown" href="#"
+                        class="dropdown-toggle"> 
+                        <img class="nav-user-photo" th:src="@{${#strings.concat('/person/loadphoto?path=',filepath)}}"
+                                onerror="this.src='../img/deftximg.jpg'" id="personInfoPhoto" alt="Jason's Photo"></img>
+                        <span id="username"    th:text="${username}"></span> 
+                        <i class="ace-icon fa fa-caret-down"></i>
+                    </a>
+                        <ul
+                            class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                            <li><a href="person/page" target="index"> <i class="ace-icon fa fa-user"></i> 个人设置</a></li>
+                            <li><a href="goout"> <i class="ace-icon fa fa-power-off"></i>退出登录</a></li>
+                        </ul></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container" id="main-container">
+        <div id="sidebar" class="sidebar responsive"
+            style="overflow-y: scroll; overflow-x: hidden;">
+            <ul class="nav nav-list" id="menulist">
+                <li id="defact" class="active">
+                    <a href="index">
+                        <i class="menu-icon fa fa-tachometer"></i> 
+                        <span class="menu-text">个人主页 </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div class="breadcrumbs" id="breadcrumbs">
+                <ul class="breadcrumb" id="mynav">
+                    <li>
+                        <i class="ace-icon fa fa-home home-icon"></i>
+                        <a href="index">个人主页</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="page-content" style="padding: 0px;">
+                <iframe th:src="${defalutpage}" id="iframepage" name="index" frameborder="0" style="width: 100%;"></iframe>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-inner">
+                <div class="footer-content">
+                    <span class="bigger-120"> 统一开发平台 &copy; 2018 </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript" th:src="@{/js/modules/index.js}"></script>
+</html>

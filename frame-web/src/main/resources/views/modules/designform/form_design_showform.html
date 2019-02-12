@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/syshead :: commonHead('表单预览')"></head>
+<link th:href="@{/js/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css}" rel="stylesheet" type="text/css" ></link>
+<script type="text/javascript" th:src="@{/js/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.zh-CN.js}"></script>
+<link th:href="@{/css/processform.css}" rel="stylesheet" type="text/css" ></link>
+<body>
+<div class="panel panel-style panel-top">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <i class="fa fa-file" aria-hidden="true"></i>
+            <span>表单预览</span>
+        </h3>
+    </div>
+</div>
+<div class="from-group" style="margin-left: 15px;margin-top: 10px;">
+    <button class="btn btn-default btn-sm " onclick="go()">
+        <i class="fa fa-reply"></i>
+        <span>返回</span>
+    </button>   
+</div>
+
+<div class="content  padding-left-15 padding-right-15">
+	<div id="showform" class="processform" th:utext="${workFlowForm.oraHtml}">
+	
+	</div>
+</div>
+</body>
+<script th:inline="javascript">
+
+$(function (){
+	value();
+});
+
+//输入验证,数字验证和时间插件input不可编辑。
+function value(){
+	$("#showform [orgtype='int']").attr("type","number");
+	$('input[type=number]').keypress(function(e) {
+	　　if (!String.fromCharCode(e.keyCode).match(/[0-9\.]/)) {
+	　　　　return false;
+	　　}
+	});
+	$("input[leipiplugins='datepicker']").attr("readonly","readonly");
+}
+
+function go(){
+	window.location.href = baseURL + "workflowform";
+}
+$("input[leipiplugins='datepicker']").datetimepicker({  
+    language:  'zh-CN',  
+    weekStart: 1,  
+    todayBtn:  1,  
+    format: 'yyyy-mm-dd',
+    autoclose: 1,  
+    todayHighlight: 1,  
+    startView: 2,  
+    minView: 2,  
+    forceParse: 0  
+});
+</script>
+</html>

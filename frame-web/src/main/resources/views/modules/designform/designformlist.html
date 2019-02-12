@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="pagecom/includepage :: commonHead('表单设计列表')"></head>
+<body>
+<div class="panel panel-style panel-top">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <i class="fa fa-file" aria-hidden="true"></i>
+            <span>表单设计</span>
+        </h3>
+    </div>
+</div>
+<div class="toolBar">
+    <button class="btn btn-default btn-sm " onclick="add()">
+        <i class="fa fa-plus"></i>
+        <span>新增</span>
+    </button>
+    <button class="btn btn-default btn-sm " onclick="update()">
+        <i class="fa fa-pencil-square-o"></i>
+        <span>修改</span>
+    </button>
+    <button class="btn btn-default btn-sm " onclick="show()">
+        <i class="fa fa-eye"></i>
+        <span>预览</span>
+    </button>
+    <button class="btn btn-default btn-sm " onclick="del()">
+        <i class="glyphicon glyphicon-trash"></i>
+        <span>删除</span>
+    </button>
+    
+</div>
+<div class="content padding-left-15 padding-right-15" style="margin-top:0px;">
+    <table data-click-to-select="true"
+           data-toolbar=".toolBar"
+           data-select-item-name="id"
+           data-toggle="table"
+           data-show-columns="true"
+           data-page-size="10"
+           data-cache = "false"
+           data-show-refresh="true"
+           data-search-align="right"
+           data-url="workflowform/list"
+           id="formDesignTable">
+        <thead>
+        <tr>
+            <th data-field="" data-checkbox="true"></th>
+            <th data-field="id" data-formatter="numberColumn"> 序号</th>
+            <th data-field="formName"> 表单名称</th>
+            <th data-field="typename"> 分类名称</th>
+            <th data-field="displayName"> 显示名称</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+<script th:src="@{/js/modules/designform/designformlist.js}"></script>
+<script type="text/javascript">
+	$(function(){searchPlaceholder("请输入表单名称","请输入表单名称");});
+</script>
+</body>
+</html>

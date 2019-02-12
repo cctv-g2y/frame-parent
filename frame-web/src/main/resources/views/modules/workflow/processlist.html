@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="pagecom/includepage :: commonHead('流程列表')"></head>
+<body>
+    <div class="tab-fixed">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="active" role="presentation">
+                <a aria-controls="process-list" data-toggle="tab" href="#process-list" role="tab">
+                    <i class="glyphicon glyphicon-check" aria-hidden="true"></i> <span>已部署流程</span>
+                </a>
+            </li>
+            <li role="presentation">
+                <a aria-controls="running-list" data-toggle="tab" href="#running-list" role="tab" onclick="runningTable()">
+                    <i class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></i> <span>运行中流程</span>
+                </a>
+            </li>
+            <li role="presentation">
+                <a aria-controls="go-process" data-toggle="tab" href="#go-process" role="tab">
+                    <i class="glyphicon glyphicon-cog" aria-hidden="true"></i> <span>部署流程  </span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="tab-content content">
+        <!-- 流程列表start -->
+        <div class="tab-pane panel panel-style active" role="tabpanel" id="process-list">
+            <div class="panel panel-style panel-no-shadow">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <i class="fa fa-users" aria-hidden="true"></i> <span>已部署列表</span>
+                    </h3>
+                </div>
+                <div class="panel-body padding-top-1 padding-bottom-5" id="processtables">
+                    <table id="processTable" data-toolbar="#processList"></table>
+                </div>
+            </div>
+            <div id="processList">
+                <button class="btn btn-default btn-sm toolBar margin-right-4" id="suspends" onclick="suspends()">
+                    <i class="glyphicon glyphicon-remove-sign"></i>&nbsp;挂起定义
+                </button>
+                <button class="btn btn-default btn-sm toolBar margin-right-4" id="actives" onclick="actives()">
+                    <i class="glyphicon glyphicon-ok-sign"></i>&nbsp;激活定义
+                </button>
+                <button class="btn btn-default btn-sm toolBar margin-right-4" id="dels" onclick="dels()">
+                    <i class="glyphicon glyphicon-trash"></i>&nbsp;删除定义
+                </button>
+                <button class="btn btn-default btn-sm toolBar margin-right-4" id="tomodels" onclick="tomodels()">
+                    <i class="glyphicon glyphicon-retweet"></i>&nbsp;转为模型
+                </button>
+                <button class="btn btn-default btn-sm toolBar margin-right-4" id="toimgs" onclick="toimgs()">
+                    <i class="glyphicon glyphicon-share-alt"></i>&nbsp;导出图片
+                </button>
+            </div>
+        </div>
+        <!-- 流程列表end -->
+        
+        <!-- 运行中列表start -->
+        <div class="tab-pane panel panel-style" role="tabpanel" id="running-list">
+            <div class="tab-pane panel panel-style active" role="tabpanel" id="process-list">
+            <div class="panel panel-style panel-no-shadow">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <i class="fa fa-users" aria-hidden="true"></i> <span>运行中列表</span>
+                    </h3>
+                </div>
+                <div class="panel-body padding-top-1 padding-bottom-5" id="runningtables">
+                    <table id="runningTable" data-toolbar="#runningList"></table>
+                </div>
+            </div>
+            <div id="runningList">
+                <button class="btn btn-default btn-sm toolBar margin-right-4" id="delRunList" onclick="delRunList()">
+                    <i class="glyphicon glyphicon-trash"></i>&nbsp;删除实例
+                </button>
+            </div>
+        </div>
+        </div>
+        <!-- 运行中列表end -->
+        
+        <!-- 去部署start -->
+        <div class="tab-pane panel panel-style" role="tabpanel" id="go-process">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <i class="fa fa-cloud-upload" aria-hidden="true"></i> <span>部署流程</span>
+                </h3>
+            </div>
+            <div class="col-sm-8 margin-bottom-5 margin-top-5">
+                <button class="btn btn-default btn-sm" onclick="uploadActFiles()">
+                    <i class="fa fa-hand-o-up" aria-hidden="true"></i> <span>提交</span>
+                </button>
+            </div>
+            <div class="col-sm-8" style="margin-left: 10%;">
+                <form enctype="multipart/form-data" class="form-horizontal" id="uploadform">
+                    <div class="form-group margin-top-10">
+                        <div class="col-sm-2 control-label">
+                            <label class="star-b">请选择文件</label>
+                        </div>
+                        <div class="col-sm-9">
+                            <input id="uploadActProcess" class="file" type="file" name="file" multiple="multiple" />
+                        </div>
+                        <div id="errorBlock" class="help-block"></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label">
+                            <label class="star-b">流程分类</label>
+                        </div>
+                        <div class="col-sm-9">
+                            <select class="form-control" id="actcategory" name="actcategory"></select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- 去部署end -->
+    
+    </div>
+</body>
+<script th:src="@{/js/modules/workflow/processlist.js}"></script>
+</html>

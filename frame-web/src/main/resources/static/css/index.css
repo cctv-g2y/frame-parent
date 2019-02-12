@@ -1,0 +1,124 @@
+.text-align-left {
+	text-align: left !important;
+}
+
+/** 修改所有页面的导航栏 */
+.panel-heading {
+	background: #F5F5F5;
+	color: #709BC9;
+}
+
+.text-align-right {
+	text-align: right !important;
+}
+
+.text-align-center {
+	text-align: center !important;
+}
+
+.star-a:after {
+	content: "*";
+	color: #ff0f23;
+	padding-right: 5px;
+}
+
+.star-b:before {
+	content: "*";
+	color: #ff0f23;
+	padding-right: 5px;
+}
+
+.cursor-p {
+	cursor: pointer;
+}
+
+.beyond-over {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+table {
+	table-layout: fixed;
+}
+
+table tr td {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.table-layout-fixed {
+	table-layout: fixed;
+}
+
+.toolbar {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	width: 160px;
+	height: 160px;
+	z-index: 2050;
+}
+
+#panelinfo .panel-body {
+	background: #f5f6f7;
+	padding-top: 10px;
+}
+
+#panelinfo .panel-body .col-sm-2 {
+	width: 120px;
+}
+
+.fixed-table-toolbar .bs-bars, .fixed-table-toolbar .columns,
+	.fixed-table-toolbar .search {
+	margin-top: 6px;
+	margin-bottom: 6px;
+}
+
+.panel-body-style {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.panel-border {
+	border: 1px solid #ddd;
+}
+
+textarea {
+	width: 100%;
+}
+
+.panel-btn-box {
+	margin-bottom: 5px;
+}
+
+.accordion {
+	font-size: 13px;
+	text-decoration: none !important;
+	cursor: pointer;
+}
+
+.panel-no-shadow {
+	box-shadow: none;
+	-webkit-box-shadow: none;
+}
+
+.arrows-page-btn-box {
+	text-align: center;
+}
+
+.arrows-page-btn-box .arrows-btn {
+	width: 60px;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.arrows-page-btn-box .arrows-btn img {
+	width: 100%;
+}
+
+.col-ul li {
+	border-bottom: 1px dashed #ddd;
+	margin-bottom: 0px;
+}

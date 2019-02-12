@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="pagecom/includepage :: commonHead('任务表单')"></head>
+<body>
+    <div class="panel panel-style">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <i class="fa fa-user-plus" aria-hidden="true"></i> <span>任务表单</span>
+            </h3>
+        </div>
+        <div class="panel-body">
+            <div class="text-align-left">
+                <button type="button" id="start_button" class="btn btn-default btn-sm" onclick="run()">
+                    <i class="fa fa-hand-o-up" aria-hidden="true"></i> <span>发起流程</span>
+                </button>
+                <button type="button" id="draft_button" class="btn btn-default btn-sm" onclick="savedraft()">
+                    <i class="fa fa-file-text" aria-hidden="true"></i> <span>存为待发</span>
+                </button>
+            </div>
+            <form class="form-horizontal margin-top-10" id="formtest" name="formtest">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label star-b">事项名称:</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="workName" name="workName" placeholder="请输入名称" />
+                    </div>
+                    <label class="col-sm-2 control-label">流程名称:</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="procDefName" name="procDefName" readonly="readonly" th:value="${procDefName}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="file" class=" col-sm-2 control-label">附件：</label>
+                    <div class=" col-sm-3">
+                        <input id="uploadFile" class="file" type="file" name="file" multiple="multiple" />
+                    </div>
+                    <div id="files" style="display: none;">
+                        <label for="title" class="col-sm-2 control-label">附件列表</label>
+                        <div class=" col-sm-3" id="filediv"></div>
+                    </div>
+                </div>
+                <input type="hidden" id="fileids" />
+            </form>
+            <div style="padding: 0px;">
+                <iframe th:src="${formKey}" id="iframepage" frameborder="0" scrolling="no" style="width: 100%;"></iframe>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script th:src="@{/js/modules/worktask/worktaskform.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+/*<![CDATA[*/
+$(function (){
+    var formKey = /*[[${formKey}]]*/;
+    if(formKey.indexOf("errorpage/404") != -1){
+        $("#start_button").attr('disabled',"disabled");
+        $("#draft_button").attr('disabled',"disabled");
+    }
+});
+$('#uploadFile').fileinput({
+    language : 'zh',
+    uploadUrl : baseURL+'document/uploadfiles',
+    showUpload : false,
+    uploadExtraData : function(previewId, index) {
+        var data = {
+        }
+        return data;
+    },
+    showPreview : false,
+    showRemove : false,
+    uploadAsync:false
+});
+
+/** 上传成功回调 */
+$("#uploadFile").on("filebatchuploadsuccess", function(event, data, previewId,msg) {
+    $("#uploadFile").removeAttr('isuploading');
+    if(data.response.code != 0){
+        $.bsAlert(data.response.msg).error();
+        return false;
+    }
+    if (data.files.length < 1) {
+        return false;
+    }
+    var fileid = data.response.fileid.split(",");
+    var filenames = "";
+    for (var i = 0; i < data.files.length; i++) {
+        filenames += "<span class='span1 glyphicon glyphicon-remove' " +
+            "title='"+data.files[i].name+"'" +
+            "name='"+fileid[i]+"' onclick = 'del(this)'>" +
+            data.files[i].name + "</span>";
+    }
+    $("#filediv").html($("#filediv").html()+filenames);
+    $("#files").show();
+    
+});
+
+/** 文件服务器错误提示 */
+$('#uploadFile').on('fileerror', function(event, data, msg) {
+    window.location = baseURL + "document/fasterror";
+});
+
+/** 文件选中就上传 */
+$("#uploadFile").on("filebatchselected", function (event, files) {
+    $("#uploadFile").attr('isuploading',1);
+    $(this).fileinput("upload");
+});
+
+/** 移除附件 */
+function del(div){
+    Ewin.confirm({message: '确认要移除该附件吗？'}).on(function (r) {
+        if (r) {
+            $(div).remove();
+            var id=$(div).attr("name");
+            deleteFile(id);
+            if(isEmpty($(".span1").html())){
+                $("#files").hide();
+            }
+        } else {
+            return false;
+        }
+    })
+}
+/*]]>*/
+</script>
+
+</html>

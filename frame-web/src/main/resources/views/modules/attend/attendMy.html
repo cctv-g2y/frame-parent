@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="pagecom/includepage :: commonHead('个人考勤界面')"></head>
+<body>
+	<div class="tab-fixed">
+		<ul class="nav nav-tabs" role="tablist">
+			<li class="active" role="tab"><a aria-controls="attend-see"
+				data-toggle="tab" href="#attend-see" role="tab"> <i
+					class="fa fa-user-circle-o" aria-hidden="true"></i> <span>考勤预览</span>
+			</a></li>
+			<li role="tab" onclick="isattend()"><a
+				aria-controls="attend-act" data-toggle="tab" href="#attend-act">
+					<i class="fa fa-keyboard-o" aria-hidden="true"></i> <span>考勤签到</span>
+			</a></li>
+		</ul>
+	</div>
+	<div class="tab-content content">
+		<!-- 考勤预览开始 -->
+		<div class="tab-pane panel panel-style active" role="tabpanel"
+			id="attend-see">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					<i class="glyphicon glyphicon-align-justify" aria-hidden="true"></i>
+					<span>考勤预览</span>
+				</h3>
+			</div>
+			<div id="collapseTable" class="panel-collapse collapse in">
+				<div class="panel-body padding-top-1 padding-bottom-5" id="pending"
+					role="tabpanel">
+					<table data-data-field="records" data-pagination="true"
+						data-toolbar=".toobar" data-side-pagination="server"
+						data-show-refresh="true" data-page-size="5" data-cache="false"
+						data-show-columns="false" data-sort-order="asc"
+						data-sort-stable="true" data-toggle="table"
+						data-click-to-select="true" data-search="true"
+						data-url="showmylist" data-search-align="right" id="attendMy">
+						<thead>
+							<tr>
+								<th data-field="" data-radio="true"></th>
+								<th data-formatter="numberColumn">序号</th>
+								<th data-field="attendId" data-visible="false">ID</th>
+								<th data-field="shouldDate" data-searchable="true">应该考勤日</th>
+								<th data-field="workDate" data-formatter="forWorkDate">实际考勤日</th>
+								<th data-field="onStatus" data-formatter="forOn">迟到</th>
+								<th data-field="offStatus" data-formatter="forOff">早退</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+			<div class="toobar">
+				<button class="btn btn-default btn-sm" data-toggle="tooltip"
+					data-placement="top" title="详情" onclick="show()">
+					<i class="fa fa-eye" aria-hidden="false"></i> <span>详情</span>
+				</button>
+			</div>
+			<!-- 操作按钮 -->
+			<div class="arrows-page-btn-box" style="display: none;">
+				<a class="arrows-btn top" data-toggle="collapse"
+					data-parent="#accordion" href="#collapseTable"> <img
+					th:src="@{/img/arrows/arrows-page-top.png}" />
+				</a> <a class="arrows-btn down" data-toggle="collapse"
+					data-parent="#accordion" href="#collapseInfo"> <img
+					th:src="@{/img/arrows/arrows-page-down.png}" />
+				</a>
+			</div>
+			<div id="panelinfo" class="panel panel-style margin-top-5"
+				style="display: none;">
+				<div class="panel-heading" style="border-top: 1px solid #ddd;">
+					<div class="panel-title">
+						<div>
+							<i class="fa fa-eye" aria-hidden="true"></i> <span>考勤详情</span>
+						</div>
+					</div>
+				</div>
+				<div id="collapseInfo"	class="panel-body panel-body-style collapse in">
+					<div  class="col-sm-12">
+							<form class="form-horizontal" id="showmyattend">
+								<div class="panel-border margin-top-20">
+									<div class="form-group margin-top-20">
+										<label class="col-sm-2 control-label">考勤日期</label>
+										<div class="col-sm-8">
+											<input type="text" class="form-control" id="shouldDate"
+												name="shouldDate" placeholder="应该考勤打卡日期" readonly="readonly"/>
+										</div>
+									</div>
+									<div class="form-group" id="ontb">
+										<label class="col-sm-2 control-label">上班打卡时间</label>
+										<div class="col-sm-8">
+											<input type="text" class="form-control" id="ont"
+												name="ont" placeholder="上班打卡时间" readonly="readonly"/>
+										</div>
+									</div>
+									<div class="form-group" id="latetimes">
+										<label class="col-sm-2 control-label">上班迟到时间</label>
+										<div class="col-sm-8">
+											<input type="text" class="form-control" id="latetimess"
+												name="latetimess" placeholder="上班迟到时间" readonly="readonly"/>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">迟到原因</label>
+										<div class="col-sm-8" id="latesay" style="display: none;">
+											<input type="text" class="form-control" id="lateMarkb"
+												name="lateMarkb" placeholder="请描述迟到原因" />
+										</div>
+										<div class="col-sm-8" id="nolate" style="display: none;">
+											<span>正常签到</span>
+										</div>
+										<div class="col-sm-8" id="nol" style="display: none;">
+											<span>未打卡</span>
+										</div>
+									</div>
+									<div class="form-group" id="offtb">
+										<label class="col-sm-2 control-label">下班打卡时间</label>
+										<div class="col-sm-8">
+											<input type="text" class="form-control" id="offt"
+												name="offt" placeholder="下班打卡时间" readonly="readonly"/>
+										</div>
+									</div>
+									<div class="form-group" id="earlytimes">
+										<label class="col-sm-2 control-label">下班迟到时间</label>
+										<div class="col-sm-8">
+											<input type="text" class="form-control" id="earlytimess"
+												name="earlytimess" placeholder="下班迟到时间" readonly="readonly"/>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">早退原因</label>
+										<div class="col-sm-8" id="earlysay" style="display: none;">
+											<input type="text" class="form-control" id="earlyMarkb"
+												name="earlyMarkb" placeholder="请描述早退原因" />
+										</div>
+										<div class="col-sm-8" id="noearly" style="display: none;">
+											<span>正常签退</span>
+										</div>
+										<div class="col-sm-8" id="noe" style="display: none;">
+											<span>未打卡</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">考勤状态</label>
+										<div class="col-sm-8" id="earlysay">
+											<span  id="sayt"></span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">自我说明</label>
+										<div class="col-sm-8">
+											<textarea rows="5" cols="" style="resize: none" id="mymark"
+												name="mymark" placeholder="请描述缺勤或者未打卡的原因以及自我总结"></textarea>
+										</div>
+									</div>
+									<div class="form-group" style="display: none;">
+										<label class="col-sm-2 control-label">id</label>
+										<div class="col-sm-8">
+											<input type="text" class="form-control" id="bid" name="bid"
+												placeholder="id" />
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">说明提交</label>
+										<div class="col-sm-8">
+											<button class="btn btn-default btn-sm" type="button"
+												onclick="submitmark()">
+												<i class="fa fa-hand-o-up" aria-hidden="true"></i> <span>提交</span>
+											</button>
+											<button class="btn btn-default btn-sm" type="button"
+												onclick="resetmarks()">
+												<i class="fa fa-repeat" aria-hidden="true"></i> <span>重置</span>
+											</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+				</div>
+			</div>
+
+
+		</div>
+		<!-- 考勤预览结束 -->
+
+		<!-- 考勤签到开始 -->
+		<div class="tab-pane panel panel-style" role="tabpanel"
+			id="attend-act">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					<i class="fa fa-user-plus" aria-hidden="true"></i> <span>考勤签到</span>
+				</h3>
+			</div>
+			<div class="container margin-top-10">
+				<div class="panel-heading col-md-10 margin-bottom-15">
+					<h3 class="panel-title">
+						<i class="glyphicon glyphicon-flag" aria-hidden="true"></i> <span
+							id="nowdatetime"></span>
+					</h3>
+				</div>
+				<div class="col-sm-10" id="isattend">
+					<div class="panel-border margin-top-50">
+						<div class="form-group margin-top-20"
+							style="text-align: center; line-height: 33px">
+							<h1 id="sleep" style="display: none;">
+								<span>今天休假不用签到！</span>
+							</h1>
+							<h1 id="work" onclick="goattend()"
+								style="display: none; cursor: pointer;">
+								<span>工作日，请签到！</span>
+							</h1>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-10" id="actattend" style="display: none;">
+					<form class="form-horizontal" id="time">
+						<div class="panel-border">
+							<div class="form-group margin-top-20">
+								<label class="col-sm-2 control-label star-b">上班签到</label>
+								<div class="col-sm-8" id="actm" style="display: none;">
+									<button class="btn btn-default" title="签到" onclick="goup()"
+										type="button">
+										<i class="fa fa-hand-o-up" aria-hidden="true"></i> <span>签到</span>
+									</button>
+								</div>
+								<div class="col-sm-8" id="normalm" style="display: none;">
+									<span>正常签到</span>
+								</div>
+								<div class="col-sm-8" id="latem" style="display: none;">
+									<input type="text" class="form-control" id="lateTime"
+										name="lateTime" placeholder="迟到时间(分钟)" readonly="readonly" />
+								</div>
+							</div>
+							<div class="form-group margin-top-20" style="display: none;"
+								id="lates">
+								<label class="col-sm-2 control-label">迟到说明</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" id="lateMark"
+										name="lateMark" placeholder="请描述迟到原因" />
+								</div>
+							</div>
+							<div class="form-group" style="display: none;" id="actaa">
+								<label class="col-sm-2 control-label star-b">下班签退</label>
+								<div class="col-sm-8" id="acta" style="display: none;">
+									<button class="btn btn-default" title="签退" onclick="godown()"
+										type="button">
+										<i class="fa fa-hand-o-up" aria-hidden="true"></i> <span>签退</span>
+									</button>
+								</div>
+								<div class="col-sm-8" id="normala" style="display: none;">
+									<span>正常签退</span>
+								</div>
+								<div class="col-sm-8" id="eara" style="display: none;">
+									<input type="text" class="form-control" id="earlyTime"
+										name="earlyTime" placeholder="早退时间(分钟)" readonly="readonly" />
+								</div>
+							</div>
+							<div class="form-group" style="display: none;" id="ears">
+								<label class="col-sm-2 control-label">早退说明</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" id="earlyMark"
+										name="earlyMark" placeholder="请描述早退原因" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">自我说明</label>
+								<div class="col-sm-8">
+									<textarea rows="5" cols="" style="resize: none"
+										id="myattendmark" name="myattendmark"></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">说明提交</label>
+								<div class="col-sm-8">
+									<button class="btn btn-default btn-sm" type="button"
+										onclick="gomark()">
+										<i class="fa fa-hand-o-up" aria-hidden="true"></i> <span>提交</span>
+									</button>
+									<button class="btn btn-default btn-sm" type="button"
+										onclick="resetmark()">
+										<i class="fa fa-repeat" aria-hidden="true"></i> <span>重置</span>
+									</button>
+								</div>
+							</div>
+							<div class="form-group" style="display: none;">
+								<label class="col-sm-2 control-label star-b">签到id</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" id="attendId"
+										name="attendId" placeholder="签到id" />
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+
+		</div>
+		<!-- 考勤签到结束 -->
+	</div>
+</body>
+<script type="text/javascript"
+	th:src="@{/js/modules/attend/attendMy.js}"></script>
+</html>

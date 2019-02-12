@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="pagecom/includepage :: commonHead('角色管理界面')"></head>
+<body>
+	<div class="panel panel-style panel-no-shadow">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				<i class="fa fa-users" aria-hidden="true"></i> <span>角色管理</span>
+			</h3>
+		</div>
+		<div id="collapseTable" class="panel-collapse collapse in">
+			<div class="panel-body padding-top-1 padding-bottom-5">
+				<table data-click-to-select="true" data-show-refresh="true"
+					data-show-columns="true" data-toolbar=".toolBar"
+					data-select-item-name="id" data-page-size="5"
+					data-search-align="right" data-toggle="table" data-cache="false"
+					data-url="list" id="roleTable">
+					<thead>
+						<tr>
+							<th data-field="" data-checkbox="true"></th>
+							<th data-field="id" data-formatter="numberColumn">序号</th>
+							<th data-field="roleName">角色名称</th>
+							<th data-field="mark">备注</th>
+							<th data-field="createName">创建人</th>
+							<th data-field="createTime">创建时间</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<div class="toobar">
+		<button class="btn btn-default btn-sm toolBar margin-right-4" id="add"
+			onclick="add()">
+			<i class="fa fa-plus"></i>&nbsp;新增
+		</button>
+		<button class="btn btn-default btn-sm toolBar margin-right-4"
+			id="update" onclick="update()">
+			<i class="fa fa-pencil-square-o"></i>&nbsp;修改
+		</button>
+		<button class="btn btn-default btn-sm toolBar margin-right-4" id="del"
+			onclick="del()">
+			<i class="glyphicon glyphicon-trash"></i>&nbsp;删除
+		</button>
+	</div>
+	<!-- 操作按钮 -->
+	<div class="arrows-page-btn-box" style="display: none;">
+		<a class="arrows-btn top" data-toggle="collapse"
+			data-parent="#accordion" href="#collapseTable"> <img
+			th:src="@{/img/arrows/arrows-page-top.png}" />
+
+		</a> <a class="arrows-btn down" data-toggle="collapse"
+			data-parent="#accordion" href="#collapseInfo"> <img
+			th:src="@{/img/arrows/arrows-page-down.png}" />
+		</a>
+	</div>
+	<div id="freedetail" class="panel panel-style margin-top-5"
+		style="display: none;">
+		<div class="panel-heading" style="border-top: 1px solid #ddd;">
+			<h3 class="panel-title">
+				<i id="add-icon" class="glyphicon glyphicon-plus" aria-hidden="true"></i>
+				<i id="update-icon" class="fa fa-pencil-square-o" aria-hidden="true"
+					style="display: none"></i> <span class="email-word-fa "
+					id="myModalLabel"></span>
+			</h3>
+		</div>
+		<div id="collapseInfo" class="panel-body panel-body-style collapse in">
+			<div class="col-sm-12  margin-bottom-5">
+				<button class="btn btn-default btn-sm" onclick="saveOrUpdate()">
+					<i class="fa fa-hand-o-up" aria-hidden="true"></i> <span>提交</span>
+				</button>
+				<button class="btn btn-default btn-sm" data-toggle="modal"
+					data-placement="top" onclick="reset()">
+					<i class="fa fa-repeat" aria-hidden="true"></i> <span>重置</span>
+				</button>
+			</div>
+			<div class="col-sm-12">
+				<form id="myForm" class="form-horizontal margin-top-10">
+					<div class="form-group">
+						<label class="col-sm-2 control-label star-b">角色名称</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="roleName"
+								name="roleName" placeholder="角色名称" /> <input type="hidden"
+								id="roleId" name="roleId" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">备注</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="mark" name="mark"
+								placeholder="备注" />
+						</div>
+					</div>
+					<div class="form-inline clearfix col-sm-12 "
+						style="margin-top: 20px;">
+						<div class="form-group col-sm-1">
+							<strong class="text-align-right " style="margin-left: 20%;">功能权限</strong>
+						</div>
+						<div class="form-group col-sm-4 ">
+							<div class="col-sm-10 role-box">
+								<ul id="menuTree" class="ztree"></ul>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+<script th:src="@{/js/modules/sys/role.js}"></script>
+<script th:src="@{/js/bootstrap-local.js}"></script>
+</html>

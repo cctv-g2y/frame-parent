@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="pagecom/includepage :: commonHead('字典管理界面')"></head>
+<style>
+    .form-inline .form-control {
+        width: 100% !important;
+        border-radius: 0;
+    }
+
+    .panel {
+        padding-bottom: 15px;
+        border-radius: 0;
+    }
+
+    .modal {
+        top: 45px;
+    }
+</style>
+<body>
+<div class="panel panel-style" style="padding-bottom:0;border-bottom:0px;">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <i class="glyphicon glyphicon-book" aria-hidden="true"></i>
+            <span>字典列表</span>
+        </h3>
+    </div>
+</div>
+<div class="content padding-bottom-20 padding-right-10 margin-top-1">
+    <div class="col-sm-5">
+        <div class="panel panel-style margin-bottom-1" style="border:1px solid transparent;">
+            <div class="panel-heading" style="background: transparent;">
+                <h3 class="panel-title">字典管理</h3>
+                <div class="panel-actions">
+                    <button class="btn btn-danger  btn-sm" onclick="isRemovedict()">删除</button>
+                </div>
+            </div>
+            <div class="panel-body" style="max-height:500px;overflow-y: auto;">
+                <ul id="dicTree" class="ztree" style="width:260px; overflow:auto;"></ul>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-sm-7">
+        <div class="row" id="div-update" style="display:none;">
+            <div class="panel panel-style" style="margin-top:10px; border:1px solid #ddd; box-shadow:none;">
+                <div class="panel-heading panel-heading-bg-style-1">
+                    <h3 class="panel-title">
+                        <i class="fa fa-gift" aria-hidden="true"></i>
+                        <span>字典</span>
+                    </h3>
+                    <div class="panel-actions">
+                        <button class="btn btn-hollow btn-sm" data-type="0" onclick="savedict(this)"
+                                style="margin-top:2px; padding:3px 8px !important;">修改
+                        </button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <form role="form" class="form-inline" id="Update">
+                        <div class="form-group col-sm-3">
+                            <label class="star-b">名称：</label>
+                            <input type="text" class="form-control" name="dictname"/>
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <label class="">编码 ：</label>
+                            <input type="text" class="form-control" name="dictcode" readonly="readonly"/>
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <label class="">值：</label>
+                            <input type="text" class="form-control" name="dictvalue"/>
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <label class="">字典参数：</label>
+                            <input type="text" class="form-control" name="dictparams"/>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <label class="">说明：</label>
+                            <textarea id="upd-dict-remark" class="form-control" rows="2"></textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="div-add">
+            <div class="panel panel-style" style="margin-top:10px; border:1px solid #ddd; box-shadow:none;">
+                <div class="panel-heading panel-heading-bg-style-0">
+                    <h3 class="panel-title">
+                        <i class="fa fa-gift" aria-hidden="true"></i>
+                        <span>添加字典</span>
+                    </h3>
+                    <div class="panel-actions">
+                        <button class="btn btn-hollow btn-sm" data-type="1" onclick="savedict(this)"
+                                style="margin-top:2px; padding:3px 8px !important;">添加
+                        </button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <form role="form" class="form-inline" id="Save">
+                        <div class="form-group col-sm-3">
+                            <label class="star-b">名称：</label>
+                            <input type="text" class="form-control" name="dictname"/>
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <label class="">编码：</label>
+                            <input type="text" class="form-control" name="dictcode" readonly="readonly"/>
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <label class="">值：</label>
+                            <input type="text" class="form-control" name="dictvalue"/>
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <label class="">字典参数：</label>
+                            <input type="text" class="form-control" name="dictparams"/>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <label class="">说明：</label>
+                            <textarea class="form-control" rows="2" id="add-dict-remark"></textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script th:src="@{/js/modules/sys/dict.js}"></script>
+<script th:src="@{/js/bootstrap-local.js}"></script>
+</html>

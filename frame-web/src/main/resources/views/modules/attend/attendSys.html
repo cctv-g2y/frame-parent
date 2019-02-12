@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="pagecom/includepage :: commonHead('考勤时间设置界面')"></head>
+<body>
+	<div class="tab-fixed">
+		<ul class="nav nav-tabs" role="tablist">
+			<li class="active" role="tab" onclick="resetTime()"><a
+				aria-controls="attend-date" data-toggle="tab"
+				href="#attend-date" role="tab"> <i
+					class="fa fa-user-circle-o" aria-hidden="true"></i> <span>签到日期设置</span>
+			</a></li>
+			<li role="tab" onclick="getattendTime()"><a aria-controls="attend-time"
+				data-toggle="tab" href="#attend-time" role="tab"> <i
+					class="fa fa-keyboard-o" aria-hidden="true"></i> <span>签到时间设置</span>
+			</a></li>
+		</ul>
+	</div>
+	<div class="tab-content content">
+	<!-- 签到日期开始 -->
+	<div class="tab-pane panel panel-style active" role="tabpanel"
+			id="attend-date">
+		<div class="panel-heading">
+			<h3 class="panel-title">
+				<i class="fa fa-user-plus" aria-hidden="true"></i> <span>签到日期</span>
+			</h3>
+		</div>
+		<div id="collapseTable" class="panel-collapse collapse in">
+			<div class="panel-body padding-top-1 padding-bottom-5" id="pending"
+				role="tabpanel">
+				<table data-data-field="records" 
+					data-pagination="true"
+					data-toolbar=".toobar" 
+					data-side-pagination="server"
+					data-show-refresh="true" 
+					data-page-size="5" 
+					data-cache = "false"
+					data-show-columns="true" 
+					data-sort-order="asc"
+					data-sort-stable="true" 
+					data-toggle="table"
+					data-click-to-select="true" 
+					data-search="true" 
+					data-url="showsyslist"
+					data-search-align="right" 
+					id="attendDatetab">
+					<thead>
+						<tr>
+							<th data-field="" data-checkbox="true"></th>
+							<th data-formatter="numberColumn" >序号</th>
+							<th data-field="attDateid" data-visible="false"	>ID</th>
+							<th data-field="calendarDate" data-searchable="true">日期</th>
+							<th data-field="isWorkingday" data-formatter="forIswork">工作日状态</th>
+							<th data-field="mark" data-formatter="forMark">备注</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+
+	<div class="toobar">
+		<button class="btn btn-default btn-sm" data-toggle="tooltip"
+			data-placement="top" title="新增" onclick="add()">
+			<i class="glyphicon glyphicon-plus" aria-hidden="false"></i> <span>新增</span>
+		</button>
+		<button class="btn btn-default btn-sm" data-toggle="tooltip"
+			data-placement="top" title="修改" onclick="update()">
+			<i class="fa fa-pencil-square-o" aria-hidden="true"></i> <span>修改</span>
+		</button>
+		<button class="btn btn-default btn-sm" data-toggle="tooltip"
+			data-placement="top" title="删除" onclick="del()">
+			<i class="glyphicon glyphicon-trash" aria-hidden="true"></i> <span>删除</span>
+		</button>
+	</div>
+	<!-- 操作按钮 -->
+	<div class="arrows-page-btn-box" style="display: none;">
+		<a class="arrows-btn top" data-toggle="collapse"
+			data-parent="#accordion" href="#collapseTable"> <img
+			th:src="@{/img/arrows/arrows-page-top.png}" />
+		</a> <a class="arrows-btn down" data-toggle="collapse"
+			data-parent="#accordion" href="#collapseInfo"> <img
+			th:src="@{/img/arrows/arrows-page-down.png}" />
+		</a>
+	</div>
+	<div id="panelinfo" class="panel panel-style margin-top-5"
+		style="display: none;">
+		<div class="panel-heading" style="border-top: 1px solid #ddd;">
+			<div class="panel-title">
+				<div id="add-title" style="display: none;">
+					<i class="fa fa-plus" aria-hidden="true"></i> <span>新增考勤</span>
+				</div>
+				<div id="update-title" style="display: none;">
+					<i class="fa fa-pencil-square-o" aria-hidden="true"></i> <span>修改考勤</span>
+				</div>
+			</div>
+		</div>
+			<div id="collapseInfo" class="panel-body panel-body-style collapse in">
+				<div class="col-sm-12 margin-bottom-5">
+					<button class="btn btn-default btn-sm" onclick="saveorupdate()">
+						<i class="fa fa-hand-o-up" aria-hidden="true"></i> <span>提交</span>
+					</button>
+					<button class="btn btn-default btn-sm" data-toggle="modal"
+						data-placement="top" onclick="resetForm('#day')">
+						<i class="fa fa-repeat" aria-hidden="true"></i> <span>重置</span>
+					</button>
+				</div>
+				<div class="col-sm-12">
+					<form id="day" class="form-horizontal">
+						<div class="panel-border">
+							<div class="form-group margin-top-10">
+								<div class="col-sm-2 control-label">
+									<label class="star-b">日期</label>
+								</div>
+								<div class="col-sm-9">
+									<input type="text" name="calendarDate" id="calendarDate" class="form-control"
+									readonly="readonly"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-2 control-label">
+									<label class="star-b">状态</label>
+								</div>
+								<div class="col-sm-9">
+									<label class="radio-inline"> <input type="radio"
+										name="status" value="0" checked="checked"/> 休假
+									</label> <label class="radio-inline"> <input type="radio"
+										name="status" value="1" /> 上班
+									</label>
+								</div>
+							</div>
+							<div class="form-group margin-top-10">
+								<div class="col-sm-2 control-label">
+									<label>备注</label>
+								</div>
+								<div class="col-sm-9">
+									<textarea rows="5" cols="" style="resize:none" id="mark"></textarea>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 签到日期结束 -->
+	
+	
+	<!-- 签到时间开始 -->
+		<div class="tab-pane panel panel-style" role="tabpanel"
+			id="attend-time">
+			<div class="panel panel-style panel-top">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<i class="glyphicon glyphicon-align-justify" aria-hidden="true"></i>
+						<span>签到时间</span>
+					</h3>
+				</div>
+			</div>
+			<div class="container margin-top-10">
+				<div class="panel-heading col-md-10 margin-bottom-15">
+					<h3 class="panel-title">
+						<i class="glyphicon glyphicon-flag" aria-hidden="true"></i> <span>签到时间设置</span>
+					</h3>
+				</div>
+
+				<div class="col-sm-10 margin-bottom-5">
+					<button class="btn btn-default btn-sm" onclick="saveandupdate()">
+						<i class="fa fa-hand-o-up" aria-hidden="true"></i> <span>提交</span>
+					</button>
+					<button class="btn btn-default btn-sm" onclick="resetTime()">
+						<i class="fa fa-repeat" aria-hidden="true"></i> <span>重置</span>
+					</button>
+					<button class="btn btn-default btn-sm" onclick="flushall()">
+						<i class="fa fa-repeat" aria-hidden="true"></i> <span>清除设置</span>
+					</button>					
+				</div>
+				<div class="col-sm-10">
+					<form class="form-horizontal" id="time">
+						<div class="panel-border">
+							<div class="form-group margin-top-20">
+								<label class="col-sm-2 col-sm-2 control-label star-b">上班时间</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" id="onTime" name="onTime" placeholder="请选择时间" readonly="readonly"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label star-b">下班时间</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" id="offTime" name="offTime" placeholder="请选择时间" readonly="readonly"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 col-sm-2 control-label">备注</label>
+								<div class="col-sm-8">
+									<textarea rows="5" cols="" style="resize:none" id="timeMark" name="timeMark"></textarea>
+								</div>
+							</div>
+							<div class="form-group" style="display: none;">
+								<label class="col-sm-2 col-sm-2 control-label">id</label>
+								<div class="col-sm-8">
+									<input id="attTimeid" name="attTimeid" class="form-control"
+										type="text" />
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<!-- 签到时间结束 -->
+	</div>
+</body>
+<script type="text/javascript" th:src="@{/js/modules/attend/attendSys.js}"></script>
+</html>

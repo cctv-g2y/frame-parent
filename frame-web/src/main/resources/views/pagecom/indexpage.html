@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      lang="zh-CN">
+<head th:fragment="commonHead(title)">
+    <meta charset="utf-8"/>
+    <title th:text="${title}"></title>
+    <link th:href="@{/favicon.ico}" rel="shortcut icon" type="image/x-icon" />
+    <link th:href="@{/bootstrap/bootstrap-3.3.7/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/assets/css/font-awesome.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/assets/css/ace.min.css}" rel="stylesheet" type="text/css" id="main-ace-style"/>
+    <script type="text/javascript" th:src="@{/jquery-3.1.1/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{/js/common.js}"></script>
+    <script type="text/javascript" th:src="@{/js/component.js}"></script>
+    <script type="text/javascript" th:src="@{/assets/js/ace.min.js}"></script>
+    <script type="text/javascript" th:src="@{/bootstrap/bootstrap-3.3.7//js/bootstrap.min.js}"></script>
+</head>
+</html>

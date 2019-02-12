@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="pagecom/includepage :: commonHead('待办事项')"></head>
+<body>
+    <div class="tab-fixed">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="active" role="presentation">
+                <a aria-controls="tocla-list" data-toggle="tab" href="#tocla-list" role="tab">
+                    <i class="glyphicon glyphicon-check" aria-hidden="true"></i> <span>待签任务</span>
+                </a>
+            </li>
+            <li role="presentation">
+                <a aria-controls="todo-list" data-toggle="tab" href="#todo-list" role="tab" onclick="todoWork()">
+                    <i class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></i> <span>待办任务</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="tab-content content">
+        <!-- 待签收列表start -->
+        <div class="tab-pane panel panel-style active" role="tabpanel" id="tocla-list">
+            <div class="panel panel-style panel-no-shadow">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <i class="fa fa-users" aria-hidden="true"></i> <span>待签收列表</span>
+                    </h3>
+                </div>
+                <div id="collapseTable" class="panel-collapse collapse in">
+                    <div class="panel-body padding-top-1 padding-bottom-5" id="toclaTables">
+                        <table id="toclaTable" data-toolbar="#toclaList"></table>
+                    </div>
+                </div>
+            </div>
+            <div id="toclaList">
+                <button class="btn btn-default btn-sm toolBar margin-right-4" id="actives" onclick="toclaim()">
+                    <i class="glyphicon glyphicon-ok-sign"></i>&nbsp;签收任务
+                </button>
+            </div>
+        </div>
+        <!-- 待签收列表end -->
+        
+        <!-- 待办列表start -->
+        <div class="tab-pane panel panel-style" role="tabpanel" id="todo-list">
+            <div class="panel panel-style panel-no-shadow">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <i class="fa fa-users" aria-hidden="true"></i> <span>待办列表</span>
+                    </h3>
+                </div>
+                <div class="panel-body padding-top-1 padding-bottom-5" id="todoTables">
+                    <table id="todoTable" data-toolbar="#todoList"></table>
+                </div>
+            </div>
+            <div id="todoList">
+                <button class="btn btn-default btn-sm toolBar margin-right-4" id="delRunList" onclick="todo()">
+                    <i class="glyphicon glyphicon-ok-sign"></i>&nbsp;处理任务-暂时
+                </button>
+            </div>
+        </div>
+        <!-- 待办列表end -->
+    
+    </div>
+</body>
+<script th:src="@{/js/modules/worktask/todolist.js}"></script>
+</html>

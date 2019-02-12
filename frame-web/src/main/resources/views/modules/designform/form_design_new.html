@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/syshead :: commonHead('表单设计列表')"></head>
+<script type="text/javascript" th:src="@{/libs/bootstrap-local.js}"></script>
+<link th:href="@{/js/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css}" rel="stylesheet"
+      type="text/css"/>
+<script type="text/javascript" th:src="@{/js/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js}"></script>
+<script type="text/javascript"
+        th:src="@{/js/bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.zh-CN.js}"></script>
+<body style="overflow-x:hidden;">
+<div class="panel panel-style panel-top">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <i class="fa fa-file" aria-hidden="true"></i>
+            <span>表单设计</span>
+        </h3>
+    </div>
+</div>
+<div class="from-group" style="margin-top: 10px;"> 
+	<div class="col-sm-12 text-align-left">
+		<button class="btn btn-default btn-sm " id="add" onclick = "addorupdate()">
+	        <i class="fa fa-plus"></i>
+	        <span>保存</span>
+	    </button>
+	    <button class="btn btn-default btn-sm " id="goback" onclick ="goback()">
+	        <i class="fa fa-reply"></i>
+	        <span>返回</span>
+	    </button>
+	</div>
+</div>
+<div class="content padding-left-15 padding-right-15" style="margin-top:0px;">
+   <form class="row" id="formDesignForm">
+        <div class="form-group">
+            <input id="fields" th:value="${workFlowForm.fields}" type="hidden"/>
+            <input id="oraHtml" th:value="${workFlowForm.oraHtml}" type="hidden"/>
+            <input id="id" name="id" th:value="${workFlowForm.id}" type="hidden"/>
+            <div class="col-sm-4">
+                <label class="control-label" for="formGroupInputLarge">表单名称</label>
+                <input class="form-control" id="formName" name="formName" placeholder="请输入表单名称" th:value="${workFlowForm.formName}"/>
+            </div>
+            <div class="col-sm-4">
+                <label class="control-label" for="formGroupInputLarge">表单描述</label>
+                <input class="form-control" id="displayName" name="displayName" placeholder="请输入表单描述" th:value="${workFlowForm.displayName}"/>
+            </div>
+            <div class="col-sm-3">
+                <label class="control-label" for="formGroupInputLarge">表单类型</label>
+                <select class="form-control" id="formCategory" name="formCategory">
+                    <option th:each="projectType : ${type}"
+                        th:attr="value=${projectType.id}"
+                        th:text="${projectType.name}"></option>
+                </select>
+            </div>
+        </div>
+	    <div class="form-group" style="margin-top: 100px;">
+	    <div class="row">
+	        <div class="col-sm-2" style="top:10px;">
+	            <a class="btn btn-link" href="javascript:void(0);" id="text">文本框</a>
+	            <div class="row">
+	                <div class="col-sm-2">
+	                    <a class="btn btn-link" href="javascript:void(0);" id="textarea">多行文本</a>
+	                    <div class="row">
+	                        <div class="col-sm-2">
+	                            <a class="btn btn-link" href="javascript:void(0);" id="select">下拉菜单</a>
+	                            <div class="row">
+	                                <div class="col-sm-2">
+	                                    <a class="btn btn-link" href="javascript:void(0);" id="radios">单选框</a>
+	                                    <div class="row">
+	                                        <div class="col-sm-2">
+	                                            <a class="btn btn-link" href="javascript:void(0);" id="checkboxs">复选框</a>
+	                                            <div class="row">
+		                                         <div class="col-sm-2">
+		                                             <a class="btn btn-link" href="javascript:void(0);" id="datepicker">日期选择框</a>
+		                                         </div>
+		                                     </div>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	        <div class="col-sm-9" id="formEditor"></div>
+	    </div>
+	    </div>
+    </form>       
+<script th:src="@{/plugins/ueditor/ueditor.config.js}"></script>
+<script th:src="@{/plugins/ueditor/ueditor.all.js}"></script>
+<script th:src="@{/plugins/ueditor/lang/zh-cn/zh-cn.js}"></script>
+<script th:src="@{/plugins/ueditor/formdesign/leipi.formdesign.v4.js}"></script>
+<script th:src="@{/js/modules/workflow/form_design_detail.js}"></script>
+<script th:src="@{/plugins/ueditor/ueditor.parse.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+
+    $(function (){
+	    var formCategory=[[${workFlowForm.formCategory}]];
+		if(!isEmpty(formCategory)){
+			$("#formCategory").val(formCategory);
+		}
+    });
+   
+	//新增或修改
+	function addorupdate(){
+		var formeditorContent = formEditor.getContent();
+		var _param = $("#formDesignForm").serializeObject();
+		_param['oraHtml'] = formeditorContent;
+		_param['id'] = [[${workFlowForm.id}]];
+		$ajax("workflowform/addOrUpdate",_param,reloadJGrid);
+	}
+	
+	//返回列表
+	function goback(){
+		window.location.href = baseURL + "workflowform";
+	}
+	
+	//保存数据回调
+	function reloadJGrid(data){
+		if(data.code==0){
+			$.bsAlert('保存成功！').success();
+			window.setTimeout("goback()", 700);
+		}else{
+			$.bsAlert(r.msg).error();
+		}
+	}
+	
+</script>
+</div>
+</body>
+</html>

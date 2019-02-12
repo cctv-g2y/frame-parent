@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="pagecom/includepage :: commonHead('发起任务列表')"></head>
+<body>
+    <div class="tab-fixed">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="active" role="presentation">
+                <a aria-controls="sent-list" data-toggle="tab" href="#sent-list" role="tab">
+                    <i class="glyphicon glyphicon-check" aria-hidden="true"></i> <span>已发任务</span>
+                </a>
+            </li>
+            <li role="presentation">
+                <a aria-controls="start-work" data-toggle="tab" href="#start-work" role="tab" onclick="startWork()">
+                    <i class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></i> <span>新建任务</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="tab-content content">
+        <!-- 已发列表start -->
+        <div class="tab-pane panel panel-style active" role="tabpanel" id="sent-list">
+            <div class="panel panel-style panel-no-shadow">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <i class="fa fa-users" aria-hidden="true"></i> <span>已发任务</span>
+                    </h3>
+                </div>
+                <div id="collapseTable" class="panel-collapse collapse in">
+                    <div class="panel-body padding-top-1 padding-bottom-5" id="sentTables">
+                        <table id="sentTable" data-toolbar="#sentList"></table>
+                    </div>
+                </div>
+            </div>
+            <div id="sentList">
+                <button class="btn btn-default btn-sm toolBar margin-right-4" id="tomodels" onclick="">
+                    <i class="glyphicon glyphicon-retweet"></i>&nbsp;查看-暂时
+                </button>
+            </div>
+        </div>
+        <!-- 已发列表end -->
+        
+        <!-- 已部署列表start -->
+        <div class="tab-pane panel panel-style" role="tabpanel" id="start-work">
+            <div class="panel panel-style panel-no-shadow">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <i class="fa fa-users" aria-hidden="true"></i> <span>新建任务</span>
+                    </h3>
+                </div>
+                <div class="panel-body padding-top-1 padding-bottom-5" id="processtables">
+                    <table id="processTable" data-toolbar="#Startwork"></table>
+                </div>
+            </div>
+            <div id="Startwork">
+                <button class="btn btn-default btn-sm toolBar margin-right-4" id="delRunList" onclick="startWorkFlow()">
+                    <i class="glyphicon glyphicon-ok-sign"></i>&nbsp;发起流程-暂时
+                </button>
+            </div>
+        </div>
+        <!-- 已部署列表end -->
+    
+    </div>
+</body>
+<script th:src="@{/js/modules/worktask/startworklist.js}"></script>
+</html>
